@@ -9,7 +9,48 @@ volumes:
     grafana_data: {}
 
 services:
+  elk:
+    image: sebp/elk
+    container_name: elk
+    ports:
+      - 5601:5601
+      - 9200:9200
+      - 5044:5044
+    environment:
+      - cluster.name=${ELK_CLUSTER_NAME}
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_HEAP_SIZE=1g"
+    volumes:
+      - ./data/elk:/var/lib/elasticsearch
+      - ./elk/snapshots:/var/backups
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+  portainer:
+    image: portainer/portainer
+    container_name: portainer
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - ./data/portainer:/data
+    ports:
+        - 10000:9000
+    restart: always
 
+  netdata:
+    image: titpetric/netdata
+    ports:
+        - 19999:19999
+    volumes:
+        - /sys:/host/sys:ro
+        - /proc:/host/proc:ro
+        - /var/run/docker.sock:/run/docker.sock:ro
+        - ./netdata:/etc/netdata
+    cap_add:
+        - SYS_PTRACE
+    networks:
+        - monitor-net
   prometheus:
     image: prom/prometheus:v2.5.0
     container_name: prometheus
@@ -46,7 +87,6 @@ services:
       - monitor-net
     labels:
       org.label-schema.group: "monitoring"
-
   nodeexporter:
     image: prom/node-exporter:v0.16.0
     container_name: nodeexporter

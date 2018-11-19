@@ -4,8 +4,5 @@ route:
 receivers:
     - name: 'slack'
       slack_configs:
-          - send_resolved: true
-            text: "{{ .CommonAnnotations.description }}"
-            username: 'Prometheus'
-            channel: '#<channel-name>'
-            api_url: 'https://hooks.slack.com/services/<webhook-id>'
+          - channel: '#promtheous'
+            api_url: 'https://hooks.slack.com/services/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'
