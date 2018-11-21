@@ -22,12 +22,25 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "ES_HEAP_SIZE=1g"
     volumes:
-      - ./data/elk:/var/lib/elasticsearch
-      - ./elk/snapshots:/var/backups
+      - ./data/elk/snapshots:/var/backups
     ulimits:
       memlock:
         soft: -1
         hard: -1
+    networks:
+        - monitor-net
+  filebeats:
+      image: docker.elastic.co/beats/filebeat:6.5.1
+      user: root
+      volumes:
+        - ./filebeats/filebeat.yml:/usr/share/filebeat/filebeat.yml
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /var/lib/docker/containers:/usr/share/dockerlogs/data:ro
+        - ./data/filebeats:/usr/share/filebeat/data:rw
+      networks:
+        - monitor-net
+      depends_on:
+        - elk
   portainer:
     image: portainer/portainer
     container_name: portainer
