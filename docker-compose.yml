@@ -37,6 +37,7 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock
         - /var/lib/docker/containers:/usr/share/dockerlogs/data:ro
         - ./data/filebeats:/usr/share/filebeat/data:rw
+      container_name: filebeat
       networks:
         - monitor-net
       depends_on:

@@ -10,7 +10,7 @@ filebeat.prospectors:
   document_type: docker
   paths:
 # Location of all our Docker log files (mapped volume in docker-compose.yml)  
-    - '/usr/share/filebeat/dockerlogs/*/*.log'
+    - '/usr/share/dockerlogs/*/*.log'
 processors:
 # decode the log field (sub JSON document) if JSONencoded, then maps it's fields to elasticsearch fields
 - decode_json_fields:
