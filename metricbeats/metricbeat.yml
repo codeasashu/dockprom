@@ -1,0 +1,18 @@
+metricbeat.modules:
+- module: docker
+  metricsets:
+    - "container"
+    - "cpu"
+    - "diskio"
+    - "healthcheck"
+    - "info"
+    #- "image"
+    - "memory"
+    - "network"
+  hosts: ["unix:///usr/share/metricbeat/docker.sock"]
+  period: 10s
+  enabled: true
+
+output.elasticsearch:
+# if your elasticsearch is local you can change it to 127.0.0.1:9200
+  hosts: ["elk:9200"]

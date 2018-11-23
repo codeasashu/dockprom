@@ -42,6 +42,17 @@ services:
         - monitor-net
       depends_on:
         - elk
+  metricbeats:
+    image: docker.elastic.co/beats/metricbeat:6.5.1
+    user: root
+    volumes:
+        - ./metricbeats/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
+        - /var/run/docker.sock:/usr/share/metricbeat/docker.sock
+        - ./metricbeats/setup.sh:/usr/share/metricbeat/setup.sh
+    networks:
+        - monitor-net
+    command:
+        - "--strict.perms=false"
   portainer:
     image: portainer/portainer
     container_name: portainer
