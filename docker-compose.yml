@@ -23,6 +23,7 @@ services:
       - "ES_HEAP_SIZE=1g"
     volumes:
       - ./data/elk/snapshots:/var/backups
+      - ./data/elk/data:/var/lib/elasticsearch
     ulimits:
       memlock:
         soft: -1
@@ -45,6 +46,7 @@ services:
   metricbeats:
     image: docker.elastic.co/beats/metricbeat:6.5.1
     user: root
+    container_name: metricbeat
     volumes:
         - ./metricbeats/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
         - /var/run/docker.sock:/usr/share/metricbeat/docker.sock
