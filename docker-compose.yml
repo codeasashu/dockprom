@@ -98,11 +98,11 @@ services:
       - monitor-net
     labels:
       org.label-schema.group: "monitoring"
-  
+
   alertmanager:
     image: prom/alertmanager:v0.15.3
     container_name: alertmanager
-    volumes: 
+    volumes:
       - ./alertmanager/:/etc/alertmanager/
     command:
       - '--config.file=/etc/alertmanager/config.yml'
@@ -115,7 +115,7 @@ services:
     labels:
       org.label-schema.group: "monitoring"
   nodeexporter:
-    image: prom/node-exporter:v0.16.0
+    image: prom/node-exporter:v0.17.0
     container_name: nodeexporter
     user: root
     privileged: true
@@ -151,9 +151,9 @@ services:
       - monitor-net
     labels:
       org.label-schema.group: "monitoring"
-  
+
   grafana:
-    image: grafana/grafana:5.3.4
+    image: grafana/grafana:5.4.2
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
@@ -174,7 +174,7 @@ services:
       org.label-schema.group: "monitoring"
 
   pushgateway:
-    image: prom/pushgateway
+    image: prom/pushgateway:v0.7.0
     container_name: pushgateway
     restart: unless-stopped
     expose:
